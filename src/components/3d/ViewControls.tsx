@@ -18,24 +18,23 @@ export const ViewControls: React.FC = () => {
 
   const presets: { id: CameraPreset; label: string }[] = [
     { id: 'isometric', label: '3D Orbit' },
-    { id: 'top', label: 'Top View' },
-    { id: 'side', label: 'Side Profile' },
+    { id: 'top', label: 'Top (Plan)' },
+    { id: 'side', label: 'Side' },
     { id: 'rear', label: 'Rear Doors' },
   ];
 
   return (
-    <div className="absolute top-4 left-4 z-10 flex flex-wrap items-center gap-2 bg-slate-900/85 backdrop-blur-md border border-slate-700/60 p-2 rounded-xl shadow-xl text-xs text-white">
-      {/* Camera Angle Buttons */}
-      <div className="flex items-center gap-1 bg-slate-800/80 p-1 rounded-lg border border-slate-700/50">
-        <Compass className="w-3.5 h-3.5 text-sky-400 mr-1" />
+    <div className="absolute top-3 left-3 z-10 flex flex-wrap items-center gap-1.5 bg-card/90 dark:bg-card/85 backdrop-blur-md border border-border p-1.5 rounded-xl shadow-xs text-xs text-foreground transition-colors">
+      {/* Camera Angle Segment Controls */}
+      <div className="flex items-center gap-0.5 bg-muted p-0.5 rounded-lg">
         {presets.map((p) => (
           <button
             key={p.id}
             onClick={() => setCameraView(p.id)}
-            className={`px-2.5 py-1 rounded-md font-medium transition-all ${
+            className={`px-2.5 py-1 rounded-md font-mono text-[11px] font-medium transition ${
               cameraView === p.id
-                ? 'bg-sky-500 text-white shadow-sm'
-                : 'text-slate-300 hover:text-white hover:bg-slate-700/60'
+                ? 'bg-card text-foreground shadow-xs font-semibold'
+                : 'text-muted-foreground hover:text-foreground'
             }`}
           >
             {p.label}
@@ -43,47 +42,47 @@ export const ViewControls: React.FC = () => {
         ))}
       </div>
 
-      <div className="h-5 w-px bg-slate-700 mx-1 hidden sm:block" />
+      <div className="h-4 w-px bg-border mx-0.5 hidden sm:block" />
 
       {/* Wall Enclosure Toggle */}
       <button
         onClick={toggleContainerWalls}
-        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all ${
+        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-[11px] font-mono transition ${
           showContainerWalls
-            ? 'bg-slate-800 border-sky-500/60 text-sky-300'
-            : 'bg-slate-800/40 border-slate-700 text-slate-400 hover:text-slate-200'
+            ? 'bg-muted border-border text-foreground font-semibold'
+            : 'border-transparent text-muted-foreground hover:text-foreground'
         }`}
-        title="Toggle container enclosure wireframe"
+        title="Toggle container frame wireframe"
       >
-        <Eye className="w-3.5 h-3.5" />
-        <span>Walls</span>
+        <Eye className="w-3 h-3 stroke-[2]" />
+        <span>Cage</span>
       </button>
 
       {/* Center of Gravity Toggle */}
       <button
         onClick={toggleCoGIndicator}
-        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all ${
+        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-[11px] font-mono transition ${
           showCoGIndicator
-            ? 'bg-slate-800 border-emerald-500/60 text-emerald-300'
-            : 'bg-slate-800/40 border-slate-700 text-slate-400 hover:text-slate-200'
+            ? 'bg-muted border-border text-foreground font-semibold'
+            : 'border-transparent text-muted-foreground hover:text-foreground'
         }`}
-        title="Toggle Center of Gravity marker"
+        title="Toggle Center of Gravity balance indicator"
       >
-        <Sparkles className="w-3.5 h-3.5" />
-        <span>CoG Marker</span>
+        <Sparkles className="w-3 h-3 stroke-[2]" />
+        <span>CoG</span>
       </button>
 
-      {/* Height Cutaway / X-Ray Slider */}
-      <div className="flex items-center gap-2 bg-slate-800/80 px-2.5 py-1.5 rounded-lg border border-slate-700/50">
-        <Layers className="w-3.5 h-3.5 text-amber-400" />
-        <span className="text-slate-300">Slice: {cutawayHeightPercent}%</span>
+      {/* Height Cutaway / Slice Slider */}
+      <div className="flex items-center gap-2 bg-muted/60 px-2.5 py-1 rounded-md text-[11px] font-mono">
+        <Layers className="w-3 h-3 text-muted-foreground" />
+        <span className="text-muted-foreground">Slice: {cutawayHeightPercent}%</span>
         <input
           type="range"
           min="10"
           max="100"
           value={cutawayHeightPercent}
           onChange={(e) => setCutawayHeightPercent(Number(e.target.value))}
-          className="w-16 h-1.5 accent-amber-400 cursor-pointer bg-slate-700 rounded-lg"
+          className="w-14 h-1 accent-foreground cursor-pointer"
           title="Filter items by height"
         />
       </div>

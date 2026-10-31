@@ -2,7 +2,7 @@ import { CargoItem, CenterOfGravity, Placement3D, PlacedItem, VehicleContainer }
 import { RotatedDimension } from './orientations';
 import { calculate2DOverlapArea } from './geometry';
 
-const EPSILON = 0.5; // Tolerance for contact surface checks
+const EPSILON = 0.5; // Tolerance for contact surface checks (0.5mm)
 
 export interface SupportValidationResult {
   isValid: boolean;
@@ -12,14 +12,36 @@ export interface SupportValidationResult {
 }
 
 /**
+ * Checks if a specific 2D point (x, y) at elevation z is supported by any underlying item top surface
+ */
+function isPointSupported(
+  px: number,
+  py: number,
+  z: number,
+  underlyingItems: PlacedItem[]
+): boolean {
+  for (const u of underlyingItems) {
+    const ux1 = u.position.x - EPSILON;
+    const ux2 = u.position.x + u.dimensions.length + EPSILON;
+    const uy1 = u.position.y - EPSILON;
+    const uy2 = u.position.y + u.dimensions.width + EPSILON;
+
+    if (px >= ux1 && px <= ux2 && py >= uy1 && py <= uy2) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
  * Validates whether candidate box bottom has solid, non-cantilever physical support.
  * 
- * Rules for industrial dispatch:
- * 1. If placed on the vehicle floor (z = 0), it is 100% supported.
+ * Rules for industrial dispatch (Client Mandate: Strictly 100% support for elevated items):
+ * 1. If placed on the vehicle floor (z = 0), it is 100% supported by the vehicle bed.
  * 2. If placed on top of other items (z > 0):
- *    - Must have sufficient contact surface (defaults to 100% full base support for machinery/structures).
- *    - Zero/Strict Cantilever: Top item must NOT extend past the outer edges of the underlying support
- *      in a way that leaves corners or side edges dangling in thin air.
+ *    - 100% Base Area must be covered by the top surfaces of flush underlying items.
+ *    - All 4 corners of the candidate base must be supported (zero cantilever/dangling edges).
+ *    - If an optional lower support % is configured (e.g. for flexible sacks), it respects that threshold.
  */
 export function validateGravityAndSupport(
   pos: Placement3D,
@@ -27,7 +49,7 @@ export function validateGravityAndSupport(
   item: CargoItem,
   placedItems: PlacedItem[]
 ): SupportValidationResult {
-  // If placed on the floor of the vehicle, it has 100% ground support
+  // 1. Floor Placement: 100% ground support on vehicle bed
   if (pos.z <= EPSILON) {
     return {
       isValid: true,
@@ -43,12 +65,6 @@ export function validateGravityAndSupport(
 
   let totalSupportedArea = 0;
   const underlyingItems: PlacedItem[] = [];
-
-  // Candidate footprint boundaries
-  const candX1 = pos.x;
-  const candX2 = pos.x + dim.length;
-  const candY1 = pos.y;
-  const candY2 = pos.y + dim.width;
 
   // Find all items whose top surface is flush with the bottom of this candidate box
   for (const placed of placedItems) {
@@ -75,11 +91,12 @@ export function validateGravityAndSupport(
   }
 
   const supportedPercent = Math.min(100, (totalSupportedArea / baseArea) * 100);
-  // Default to 100% full support for industrial manufacturing structures
+  
+  // Client requirement: defaults strictly to 100% full base support
   const minRequired = item.requiredMinSupportPercent !== undefined ? item.requiredMinSupportPercent : 100;
 
-  // 1. Minimum support area threshold check
-  if (supportedPercent < minRequired - 0.5) {
+  // Area threshold check (with floating point tolerance 0.1%)
+  if (supportedPercent < minRequired - 0.1) {
     return {
       isValid: false,
       supportedAreaPercent: Math.round(supportedPercent),
@@ -88,16 +105,26 @@ export function validateGravityAndSupport(
     };
   }
 
-  // 2. Cantilever / Overhang Check:
-  // For rigid heavy cargo (> 50kg), do not allow edges to cantilever into thin air unless fully supported.
-  // We verify that the candidate does not hang over empty space beyond all underlying supports.
-  if (minRequired >= 95 && supportedPercent < 99.5) {
-    return {
-      isValid: false,
-      supportedAreaPercent: Math.round(supportedPercent),
-      underlyingItems,
-      reason: `Cantilever overhang prohibited: item edges extend beyond underlying support`,
-    };
+  // Strict 100% Rule: 4-Corner Non-Cantilever Validation
+  // If 100% (or >= 98%) support is required, all 4 corners of the bottom face MUST sit on underlying surface(s)
+  if (minRequired >= 98) {
+    const corners = [
+      { x: pos.x, y: pos.y, name: 'Front-Left' },
+      { x: pos.x + dim.length, y: pos.y, name: 'Front-Right' },
+      { x: pos.x, y: pos.y + dim.width, name: 'Rear-Left' },
+      { x: pos.x + dim.length, y: pos.y + dim.width, name: 'Rear-Right' },
+    ];
+
+    for (const c of corners) {
+      if (!isPointSupported(c.x, c.y, pos.z, underlyingItems)) {
+        return {
+          isValid: false,
+          supportedAreaPercent: Math.round(supportedPercent),
+          underlyingItems,
+          reason: `Corner ${c.name} hangs in mid-air (Strict 100% support required)`,
+        };
+      }
+    }
   }
 
   return {

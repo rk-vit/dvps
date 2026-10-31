@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import { ThemeProvider } from '@/components/theme/ThemeProvider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -13,8 +14,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Spearhead 3D Dispatch Planner | Vehicle Packing & Simulation',
-  description: 'Industrial 3D Container Loading, Vehicle Sizing, and Dispatch Sequence Optimization System',
+  title: 'DVPS | Dispatch Vehicle Planning System',
+  description: 'Dispatch Vehicle Planning System (DVPS) — 3D Container Loading, Vehicle Optimization, and Dispatch Sequencing',
+  icons: {
+    icon: '/icon.svg',
+  },
 };
 
 export default function RootLayout({
@@ -23,9 +27,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} dark antialiased`}>
-      <body className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-sky-500 selection:text-slate-950">
-        {children}
+    <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className="min-h-screen antialiased">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

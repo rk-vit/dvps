@@ -2,16 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { usePlannerStore } from '@/lib/store/usePlannerStore';
-import {
-  Play,
-  Pause,
-  SkipBack,
-  SkipForward,
-  ChevronLeft,
-  ChevronRight,
-  RotateCcw,
-  Sparkles,
-} from 'lucide-react';
+import { Play, Pause, ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
 
 export const TimelineSlider: React.FC = () => {
   const {
@@ -31,9 +22,7 @@ export const TimelineSlider: React.FC = () => {
     if (!isPlaying || totalSteps === 0) return;
 
     const interval = setInterval(() => {
-      setActiveStep(
-        activeStep >= totalSteps ? 1 : activeStep + 1
-      );
+      setActiveStep(activeStep >= totalSteps ? 1 : activeStep + 1);
     }, playbackSpeed);
 
     return () => clearInterval(interval);
@@ -44,25 +33,25 @@ export const TimelineSlider: React.FC = () => {
   );
 
   return (
-    <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
+    <div className="bg-card border border-border p-4 rounded-xl shadow-xs transition-colors">
       {/* Top Header: Step Counter & Quick Jump */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">
-            3D Loading Sequence
+          <span className="text-xs font-semibold uppercase tracking-wider font-mono text-foreground">
+            Loading Sequence Playback
           </span>
-          <span className="px-2 py-0.5 rounded-full bg-sky-950 border border-sky-500/40 text-sky-400 font-mono text-xs font-bold">
+          <span className="px-2 py-0.5 rounded-md bg-muted text-foreground font-mono text-xs font-semibold border border-border">
             Step {activeStep} / {totalSteps}
           </span>
         </div>
 
-        <div className="flex items-center gap-2 text-xs">
+        <div className="flex items-center gap-1.5 text-xs font-mono text-[11px]">
           <button
             onClick={() => {
               setIsPlaying(false);
               setActiveStep(0);
             }}
-            className="text-slate-400 hover:text-white px-2 py-1 rounded bg-slate-800/60 hover:bg-slate-800 transition"
+            className="text-muted-foreground hover:text-foreground px-2 py-1 rounded border border-border bg-card hover:bg-muted transition"
           >
             Empty Bed
           </button>
@@ -71,7 +60,7 @@ export const TimelineSlider: React.FC = () => {
               setIsPlaying(false);
               setActiveStep(totalSteps);
             }}
-            className="text-slate-400 hover:text-white px-2 py-1 rounded bg-slate-800/60 hover:bg-slate-800 transition"
+            className="text-muted-foreground hover:text-foreground px-2 py-1 rounded border border-border bg-card hover:bg-muted transition"
           >
             Fully Loaded
           </button>
@@ -89,9 +78,9 @@ export const TimelineSlider: React.FC = () => {
             setIsPlaying(false);
             setActiveStep(Number(e.target.value));
           }}
-          className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-sky-500 hover:accent-sky-400 focus:outline-none"
+          className="w-full h-1.5 bg-muted rounded-lg appearance-none cursor-pointer accent-foreground focus:outline-none"
         />
-        <div className="flex justify-between text-[10px] text-slate-500 mt-1 font-mono">
+        <div className="flex justify-between text-[10px] text-muted-foreground mt-1 font-mono">
           <span>0 (Empty)</span>
           <span>50% Loaded</span>
           <span>{totalSteps} (Complete)</span>
@@ -99,7 +88,7 @@ export const TimelineSlider: React.FC = () => {
       </div>
 
       {/* Controls Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-800/80">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-2.5 border-t border-border">
         {/* Playback Buttons */}
         <div className="flex items-center gap-1.5">
           <button
@@ -108,9 +97,9 @@ export const TimelineSlider: React.FC = () => {
               setActiveStep(0);
             }}
             title="Reset to beginning"
-            className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition"
+            className="p-1.5 rounded-md border border-border bg-card text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs"
           >
-            <RotateCcw className="w-4 h-4" />
+            <RotateCcw className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => {
@@ -118,22 +107,22 @@ export const TimelineSlider: React.FC = () => {
               setActiveStep(Math.max(0, activeStep - 1));
             }}
             title="Previous item"
-            className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition"
+            className="p-1.5 rounded-md border border-border bg-card text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-xs transition shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-foreground text-background font-semibold text-xs transition shadow-xs hover:opacity-90"
           >
             {isPlaying ? (
               <>
-                <Pause className="w-4 h-4 fill-slate-950" />
+                <Pause className="w-3.5 h-3.5 fill-current" />
                 <span>Pause</span>
               </>
             ) : (
               <>
-                <Play className="w-4 h-4 fill-slate-950" />
+                <Play className="w-3.5 h-3.5 fill-current" />
                 <span>Play Simulation</span>
               </>
             )}
@@ -144,15 +133,15 @@ export const TimelineSlider: React.FC = () => {
               setActiveStep(Math.min(totalSteps, activeStep + 1));
             }}
             title="Next item"
-            className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition"
+            className="p-1.5 rounded-md border border-border bg-card text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs"
           >
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
         {/* Speed Controls */}
-        <div className="flex items-center gap-1 text-xs">
-          <span className="text-slate-400 mr-1 text-[11px]">Speed:</span>
+        <div className="flex items-center gap-1 text-xs font-mono text-[11px]">
+          <span className="text-muted-foreground mr-1">Speed:</span>
           {[
             { label: '0.5x', ms: 1200 },
             { label: '1x', ms: 700 },
@@ -161,10 +150,10 @@ export const TimelineSlider: React.FC = () => {
             <button
               key={s.label}
               onClick={() => setPlaybackSpeed(s.ms)}
-              className={`px-2 py-0.5 rounded text-[11px] font-medium transition ${
+              className={`px-2 py-0.5 rounded border transition ${
                 playbackSpeed === s.ms
-                  ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'border-foreground bg-muted font-bold text-foreground'
+                  : 'border-border text-muted-foreground hover:text-foreground'
               }`}
             >
               {s.label}
@@ -172,20 +161,18 @@ export const TimelineSlider: React.FC = () => {
           ))}
         </div>
 
-        {/* Active Step Details Pill */}
+        {/* Active Step Details */}
         {currentPlacedItem ? (
-          <div className="w-full sm:w-auto text-xs bg-slate-800/80 border border-slate-700/60 px-3 py-1.5 rounded-lg flex items-center gap-2 text-slate-300">
+          <div className="w-full sm:w-auto text-xs bg-muted/70 border border-border px-3 py-1.5 rounded-lg flex items-center gap-2 text-foreground font-mono">
             <span className="w-2 h-2 rounded-full" style={{ backgroundColor: currentPlacedItem.color }} />
-            <span className="font-medium text-white truncate max-w-[180px]">
-              {currentPlacedItem.name}
-            </span>
-            <span className="text-slate-400 font-mono text-[11px]">
+            <span className="font-semibold truncate max-w-[160px]">{currentPlacedItem.name}</span>
+            <span className="text-muted-foreground text-[11px]">
               ({currentPlacedItem.dimensions.length}×{currentPlacedItem.dimensions.width}×{currentPlacedItem.dimensions.height}mm)
             </span>
           </div>
         ) : (
-          <div className="text-xs text-slate-500 italic">
-            {activeStep === 0 ? 'Vehicle bed empty. Press Play to start loading.' : ''}
+          <div className="text-xs text-muted-foreground font-mono">
+            {activeStep === 0 ? 'Bed empty. Hit Play to load.' : ''}
           </div>
         )}
       </div>

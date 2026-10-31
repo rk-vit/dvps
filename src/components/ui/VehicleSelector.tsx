@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { usePlannerStore } from '@/lib/store/usePlannerStore';
-import { Truck, Sliders, ChevronDown, Check } from 'lucide-react';
+import { Sliders, Check } from 'lucide-react';
 
 export const VehicleSelector: React.FC = () => {
   const {
@@ -15,35 +15,33 @@ export const VehicleSelector: React.FC = () => {
   } = usePlannerStore();
 
   const [isCustomOpen, setIsCustomOpen] = useState(false);
-
   const isCustom = selectedVehicleId === 'custom-vehicle';
 
   return (
-    <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
+    <div className="bg-card border border-border p-4 rounded-xl shadow-xs transition-colors">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <Truck className="w-5 h-5 text-sky-400" />
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-200">
-            Dispatch Vehicle & Container
-          </h2>
+          <span className="font-mono text-xs tracking-wider uppercase font-semibold text-foreground">
+            Transport Fleet & Container
+          </span>
         </div>
         <button
           onClick={() => {
             selectVehicle('custom-vehicle');
-            setIsCustomOpen(true);
+            setIsCustomOpen(!isCustomOpen);
           }}
-          className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-lg border transition-all ${
+          className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg border transition shadow-xs ${
             isCustom
-              ? 'bg-sky-500/20 border-sky-400 text-sky-300'
-              : 'border-slate-700 bg-slate-800/60 text-slate-300 hover:text-white hover:border-slate-600'
+              ? 'border-foreground bg-foreground text-background'
+              : 'border-border bg-card text-muted-foreground hover:text-foreground hover:border-neutral-400 dark:hover:border-neutral-600'
           }`}
         >
-          <Sliders className="w-3.5 h-3.5" />
+          <Sliders className="w-3 h-3 stroke-[2]" />
           <span>Custom Dimensions</span>
         </button>
       </div>
 
-      {/* Preset Vehicles Pills */}
+      {/* Preset Vehicles Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 mb-3">
         {vehicles.map((v) => {
           const active = selectedVehicleId === v.id;
@@ -54,25 +52,25 @@ export const VehicleSelector: React.FC = () => {
                 selectVehicle(v.id);
                 setIsCustomOpen(false);
               }}
-              className={`flex flex-col items-start p-2.5 rounded-xl border text-left transition-all relative ${
+              className={`flex flex-col items-start p-2.5 rounded-lg border text-left transition relative shadow-xs ${
                 active
-                  ? 'bg-sky-950/60 border-sky-500 shadow-sm'
-                  : 'bg-slate-800/40 border-slate-800 hover:bg-slate-800/80 hover:border-slate-700'
+                  ? 'border-foreground bg-muted/70 ring-1 ring-foreground/20'
+                  : 'border-border bg-card hover:bg-muted/40 hover:border-neutral-300 dark:hover:border-neutral-700'
               }`}
             >
               {active && (
-                <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-sky-500 flex items-center justify-center text-slate-950">
-                  <Check className="w-3 h-3 stroke-[3]" />
+                <div className="absolute top-2 right-2 w-3.5 h-3.5 rounded-full bg-foreground flex items-center justify-center text-background">
+                  <Check className="w-2.5 h-2.5 stroke-[3]" />
                 </div>
               )}
-              <span className={`text-xs font-semibold truncate w-full ${active ? 'text-sky-300' : 'text-slate-200'}`}>
+              <span className={`text-xs font-semibold truncate w-full ${active ? 'text-foreground' : 'text-neutral-700 dark:text-neutral-300'}`}>
                 {v.name.split('/')[0]}
               </span>
-              <span className="text-[11px] text-slate-400 font-mono mt-0.5">
+              <span className="text-[11px] text-muted-foreground font-mono mt-0.5">
                 {(v.length / 1000).toFixed(1)}m × {(v.width / 1000).toFixed(1)}m
               </span>
-              <span className="text-[10px] text-slate-500 mt-1">
-                Cap: {(v.maxPayloadKg / 1000).toFixed(1)}T
+              <span className="text-[10px] text-muted-foreground mt-1 font-mono">
+                Payload: {(v.maxPayloadKg / 1000).toFixed(1)}T
               </span>
             </button>
           );
@@ -81,54 +79,53 @@ export const VehicleSelector: React.FC = () => {
 
       {/* Custom Vehicle Inputs Drawer */}
       {isCustom && (
-        <div className="bg-slate-950/70 border border-sky-500/30 p-3.5 rounded-xl mt-3 space-y-3">
-          <div className="text-xs font-medium text-sky-300 flex items-center gap-1.5">
-            <Sliders className="w-3.5 h-3.5" />
+        <div className="bg-muted/40 border border-border p-3 rounded-lg mt-3 space-y-3">
+          <div className="text-xs font-medium text-foreground flex items-center gap-1.5 font-mono">
             <span>Custom Bed Parameters (in millimeters & kilograms)</span>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
             <div>
-              <label className="block text-slate-400 mb-1">Length (mm)</label>
+              <label className="block text-muted-foreground text-[11px] mb-1 font-mono">Length (mm)</label>
               <input
                 type="number"
                 min="1000"
                 step="100"
                 value={customVehicle.length}
                 onChange={(e) => updateCustomVehicle({ length: Number(e.target.value) || 1000 })}
-                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-100 focus:outline-none focus:border-sky-500"
+                className="w-full bg-card border border-border rounded-md px-2.5 py-1.5 text-foreground font-mono focus:outline-none focus:ring-1 focus:ring-foreground transition"
               />
             </div>
             <div>
-              <label className="block text-slate-400 mb-1">Width (mm)</label>
+              <label className="block text-muted-foreground text-[11px] mb-1 font-mono">Width (mm)</label>
               <input
                 type="number"
                 min="500"
                 step="50"
                 value={customVehicle.width}
                 onChange={(e) => updateCustomVehicle({ width: Number(e.target.value) || 500 })}
-                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-100 focus:outline-none focus:border-sky-500"
+                className="w-full bg-card border border-border rounded-md px-2.5 py-1.5 text-foreground font-mono focus:outline-none focus:ring-1 focus:ring-foreground transition"
               />
             </div>
             <div>
-              <label className="block text-slate-400 mb-1">Max Height (mm)</label>
+              <label className="block text-muted-foreground text-[11px] mb-1 font-mono">Max Height (mm)</label>
               <input
                 type="number"
                 min="500"
                 step="50"
                 value={customVehicle.height}
                 onChange={(e) => updateCustomVehicle({ height: Number(e.target.value) || 500 })}
-                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-100 focus:outline-none focus:border-sky-500"
+                className="w-full bg-card border border-border rounded-md px-2.5 py-1.5 text-foreground font-mono focus:outline-none focus:ring-1 focus:ring-foreground transition"
               />
             </div>
             <div>
-              <label className="block text-slate-400 mb-1">Max Payload (kg)</label>
+              <label className="block text-muted-foreground text-[11px] mb-1 font-mono">Max Payload (kg)</label>
               <input
                 type="number"
                 min="500"
                 step="500"
                 value={customVehicle.maxPayloadKg}
                 onChange={(e) => updateCustomVehicle({ maxPayloadKg: Number(e.target.value) || 500 })}
-                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-100 focus:outline-none focus:border-sky-500"
+                className="w-full bg-card border border-border rounded-md px-2.5 py-1.5 text-foreground font-mono focus:outline-none focus:ring-1 focus:ring-foreground transition"
               />
             </div>
           </div>
@@ -136,14 +133,13 @@ export const VehicleSelector: React.FC = () => {
       )}
 
       {/* Current Vehicle Badge Summary */}
-      <div className="flex flex-wrap items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-800/80">
+      <div className="flex flex-wrap items-center justify-between text-xs text-muted-foreground pt-2.5 border-t border-border font-mono text-[11px]">
         <div>
-          Active Vehicle:{' '}
-          <span className="font-semibold text-slate-200">{selectedVehicle.name}</span>
+          Active: <span className="font-semibold text-foreground">{selectedVehicle.name}</span>
         </div>
-        <div className="font-mono text-slate-300">
-          Internal: {selectedVehicle.length} × {selectedVehicle.width} × {selectedVehicle.height} mm
-          &nbsp;| Payload Cap: {selectedVehicle.maxPayloadKg.toLocaleString()} kg
+        <div>
+          {selectedVehicle.length} × {selectedVehicle.width} × {selectedVehicle.height} mm
+          &nbsp;| Cap: {selectedVehicle.maxPayloadKg.toLocaleString()} kg
         </div>
       </div>
     </div>
