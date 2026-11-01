@@ -120,7 +120,7 @@ export const ManifestDrawer: React.FC<ManifestDrawerProps> = ({ isOpen, onClose 
             <h3 className="font-bold text-xs uppercase tracking-wider font-mono text-foreground print:text-black mb-2">
               Sequential Ground Loading Instructions (Cab $\to$ Tailgate, Floor $\to$ Top)
             </h3>
-            <div className="border border-border print:border-black rounded-lg overflow-hidden">
+            <div className="border border-border print:border-black rounded-lg overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead className="bg-muted/60 print:bg-gray-100 text-[11px] uppercase tracking-wider text-muted-foreground print:text-gray-800 border-b border-border print:border-black font-mono">
                   <tr>

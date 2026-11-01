@@ -219,17 +219,17 @@ export const CargoCatalog: React.FC = () => {
   return (
     <div className="bg-card border border-border p-4 rounded-xl shadow-xs transition-colors flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-border">
-        <div className="flex items-center gap-2">
-          <span className="font-mono text-xs tracking-wider uppercase font-semibold text-foreground">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-border">
+        <div className="flex items-center justify-between sm:justify-start gap-2">
+          <span className="font-mono text-xs tracking-wider uppercase font-semibold text-foreground whitespace-nowrap">
             Cargo Items Catalog
           </span>
-          <span className="text-[11px] font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+          <span className="text-[11px] font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded-full shrink-0">
             {totalUnits} units
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 self-end sm:self-auto flex-wrap">
           <button
             onClick={() => {
               setActiveModalRule('any');
@@ -261,10 +261,10 @@ export const CargoCatalog: React.FC = () => {
 
       {/* Prominent Unplaced Item Alert Banner */}
       {totalUnplacedUnits > 0 && (
-        <div className="mt-2.5 p-2.5 rounded-lg border border-red-500/40 bg-red-500/10 text-xs flex items-center justify-between gap-2 shadow-xs transition-all">
+        <div className="mt-2.5 p-2.5 rounded-lg border border-red-500/40 bg-red-500/10 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-xs transition-all">
           <div className="flex items-center gap-2 min-w-0">
             <AlertTriangle className="w-4 h-4 text-red-500 shrink-0" />
-            <div className="truncate">
+            <div className="text-xs">
               <span className="font-semibold text-red-600 dark:text-red-400">
                 {totalUnplacedUnits} unit{totalUnplacedUnits > 1 ? 's' : ''} unplaced:{' '}
               </span>
@@ -273,7 +273,7 @@ export const CargoCatalog: React.FC = () => {
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex items-center gap-1.5 self-end sm:self-auto shrink-0">
             <button
               type="button"
               onClick={() => setCatalogFilter(catalogFilter === 'unplaced' ? 'all' : 'unplaced')}
@@ -297,11 +297,11 @@ export const CargoCatalog: React.FC = () => {
       )}
 
       {/* Catalog Filter Tabs & Display Units Selector Bar */}
-      <div className="flex items-center justify-between text-[11px] font-mono text-muted-foreground pt-2.5 px-0.5">
-        <div className="flex items-center gap-1">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] font-mono text-muted-foreground pt-2.5 px-0.5">
+        <div className="flex items-center gap-1 overflow-x-auto pb-0.5 sm:pb-0">
           <button
             onClick={() => setCatalogFilter('all')}
-            className={`px-2 py-0.5 rounded text-[11px] transition ${
+            className={`px-2 py-0.5 rounded text-[11px] transition shrink-0 ${
               catalogFilter === 'all'
                 ? 'bg-foreground text-background font-semibold'
                 : 'hover:text-foreground text-muted-foreground'
@@ -312,7 +312,7 @@ export const CargoCatalog: React.FC = () => {
           {unplacedItemsList.length > 0 && (
             <button
               onClick={() => setCatalogFilter(catalogFilter === 'unplaced' ? 'all' : 'unplaced')}
-              className={`px-2 py-0.5 rounded text-[11px] transition flex items-center gap-1 ${
+              className={`px-2 py-0.5 rounded text-[11px] transition flex items-center gap-1 shrink-0 ${
                 catalogFilter === 'unplaced'
                   ? 'bg-red-600 text-white font-bold'
                   : 'bg-red-500/15 text-red-600 dark:text-red-400 hover:bg-red-500/25 border border-red-500/30'
@@ -324,7 +324,7 @@ export const CargoCatalog: React.FC = () => {
           )}
         </div>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 self-start sm:self-auto shrink-0">
           <span className="text-[10px] text-muted-foreground">Dimensions:</span>
           <div className="flex items-center gap-0.5 bg-muted/60 p-0.5 rounded border border-border">
             {(['mm', 'cm', 'm', 'in'] as DimensionUnit[]).map((u) => (
@@ -630,183 +630,193 @@ export const CargoCatalog: React.FC = () => {
                 key={item.id}
                 onMouseEnter={() => setHoveredItemId(item.id)}
                 onMouseLeave={() => setHoveredItemId(null)}
-                className={`border rounded-lg p-2.5 transition-all flex items-center justify-between gap-3 text-xs shadow-xs cursor-pointer ${
+                className={`border rounded-xl p-3 transition-all flex flex-col gap-2.5 text-xs shadow-xs cursor-pointer ${
                   hasUnplaced
                     ? 'border-red-500/60 bg-red-500/5 dark:bg-red-500/10 ring-1 ring-red-500/30'
                     : isRowHovered
-                    ? 'border-lime-500 bg-lime-500/15 dark:border-lime-400 dark:bg-lime-400/15 ring-2 ring-lime-400/50 translate-x-1'
+                    ? 'border-lime-500 bg-lime-500/15 dark:border-lime-400 dark:bg-lime-400/15 ring-2 ring-lime-400/50'
                     : 'bg-card hover:bg-muted/40 border-border'
                 }`}
               >
-                <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                  <div
-                    className="w-2.5 h-2.5 rounded-full shrink-0 shadow-xs"
-                    style={{ backgroundColor: item.color }}
-                  />
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-foreground truncate">{item.name}</span>
-                      {item.sku && (
-                        <span className="text-[10px] font-mono text-muted-foreground bg-muted px-1.5 py-0.2 rounded border border-border">
-                          {item.sku}
-                        </span>
-                      )}
-                    </div>
-                    <div className="text-[11px] text-muted-foreground font-mono flex flex-wrap items-center gap-1.5 mt-0.5">
-                      <span>
-                        {formatDimension(item.length, catalogDisplayUnit)} ×{' '}
-                        {formatDimension(item.width, catalogDisplayUnit)} ×{' '}
-                        {formatDimension(item.height, catalogDisplayUnit)} {catalogDisplayUnit}
+                {/* Tier 1: Item Header (Swatch, Title, SKU, and Loaded Status) */}
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div
+                      className="w-2.5 h-2.5 rounded-full shrink-0 shadow-xs"
+                      style={{ backgroundColor: item.color }}
+                    />
+                    <span className="font-semibold text-foreground text-xs sm:text-sm truncate">
+                      {item.name}
+                    </span>
+                    {item.sku && (
+                      <span className="text-[10px] font-mono text-muted-foreground bg-muted px-1.5 py-0.5 rounded border border-border shrink-0">
+                        {item.sku}
                       </span>
-                      <span>•</span>
-                      <span>{item.weight} kg</span>
-
-                      {/* Placed Status */}
-                      <span>•</span>
-                      <span
-                        className={
-                          hasUnplaced
-                            ? 'text-red-600 dark:text-red-400 font-semibold'
-                            : 'text-emerald-600 dark:text-emerald-400 font-semibold'
-                        }
-                      >
-                        {placedCount}/{item.quantity} loaded
-                      </span>
-
-                      {/* Prominent Unplaced Warning Badge */}
-                      {hasUnplaced && (
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setUnplacedModalOpen(true);
-                          }}
-                          className="px-1.5 py-0.2 rounded bg-red-500/20 text-red-600 dark:text-red-400 font-bold border border-red-500/30 text-[10px] flex items-center gap-1 hover:underline cursor-pointer"
-                          title="Click to view why this item could not fit and explore sizing solutions"
-                        >
-                          <AlertTriangle className="w-3 h-3 text-red-500 shrink-0" />
-                          <span>{unplacedCount} UNPLACED</span>
-                        </button>
-                      )}
-
-                      {/* Rotated Badge */}
-                      {rotatedCount > 0 && (
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setActiveModalRule(item.orientation);
-                            setIsRulesModalOpen(true);
-                          }}
-                          className="px-1.5 py-0.2 rounded bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 text-[10px] hover:underline"
-                          title={`${rotatedCount} of ${placedCount} loaded units rotated on side to fit space with 100% solid support. Click for guide.`}
-                        >
-                          ↻ {rotatedCount} turned on edge
-                        </button>
-                      )}
-                    </div>
+                    )}
                   </div>
+
+                  {/* Placed Status Badge */}
+                  <span
+                    className={`text-[10px] sm:text-[11px] font-mono font-semibold px-2 py-0.5 rounded-full shrink-0 ${
+                      hasUnplaced
+                        ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30'
+                        : 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30'
+                    }`}
+                  >
+                    {placedCount}/{item.quantity} loaded
+                  </span>
                 </div>
 
-                <div className="flex items-center gap-1.5 shrink-0">
-                  {/* Quantity Controls */}
-                  <div className="flex items-center bg-background border border-border rounded-md px-1 py-0.5">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (item.quantity <= 1) {
-                          removeItem(item.id);
-                        } else {
-                          updateItem(item.id, { quantity: item.quantity - 1 });
-                        }
-                      }}
-                      className="px-1.5 text-muted-foreground hover:text-foreground font-mono"
-                    >
-                      -
-                    </button>
-                    <span className="font-mono font-semibold px-2 text-foreground">{item.quantity}</span>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        updateItem(item.id, { quantity: item.quantity + 1 });
-                      }}
-                      className="px-1.5 text-muted-foreground hover:text-foreground font-mono"
-                    >
-                      +
-                    </button>
-                  </div>
+                {/* Tier 2: Physical Specs, Dimensions, Weight, and Warnings */}
+                <div className="text-[11px] text-muted-foreground font-mono flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <span className="text-foreground font-medium">
+                    {formatDimension(item.length, catalogDisplayUnit)} ×{' '}
+                    {formatDimension(item.width, catalogDisplayUnit)} ×{' '}
+                    {formatDimension(item.height, catalogDisplayUnit)} {catalogDisplayUnit}
+                  </span>
+                  <span>•</span>
+                  <span>{item.weight} kg</span>
 
-                  {/* 1-Click Fit Placed Button if has unplaced */}
-                  {hasUnplaced && placedCount > 0 && (
+                  {/* Prominent Unplaced Warning Badge */}
+                  {hasUnplaced && (
                     <button
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
-                        updateItem(item.id, { quantity: placedCount });
+                        setUnplacedModalOpen(true);
                       }}
-                      className="text-[10px] text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/25 transition"
-                      title={`Reduce requested quantity to ${placedCount} so vehicle is 100% packed`}
+                      className="px-1.5 py-0.5 rounded bg-red-500/20 text-red-600 dark:text-red-400 font-bold border border-red-500/30 text-[10px] flex items-center gap-1 hover:underline cursor-pointer"
+                      title="Click to view why this item could not fit and explore sizing solutions"
                     >
-                      Fit {placedCount}
+                      <AlertTriangle className="w-3 h-3 text-red-500 shrink-0" />
+                      <span>{unplacedCount} UNPLACED</span>
                     </button>
                   )}
 
-                  {/* Rotation Rule Tag - Click to view guide */}
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setActiveModalRule(item.orientation);
-                      setIsRulesModalOpen(true);
-                    }}
-                    className="text-[10px] px-1.5 py-0.5 rounded border border-border bg-muted/60 text-muted-foreground hover:text-foreground hover:border-foreground/30 font-mono transition cursor-pointer"
-                    title={`Rotation mode: ${item.orientation}. Click to view animated rules explanation.`}
-                  >
-                    {item.orientation === 'any'
-                      ? '↻ Any 3D'
-                      : item.orientation === 'upright_only'
-                      ? '↑ Upright'
-                      : item.orientation === 'flat_only'
-                      ? '▭ Flat'
-                      : item.orientation === 'locked'
-                      ? '🔒 Locked'
-                      : '↔ Lengthwise'}
-                  </button>
+                  {/* Rotated Badge */}
+                  {rotatedCount > 0 && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveModalRule(item.orientation);
+                        setIsRulesModalOpen(true);
+                      }}
+                      className="px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 text-[10px] hover:underline"
+                      title={`${rotatedCount} of ${placedCount} loaded units rotated on side to fit space with 100% solid support. Click for guide.`}
+                    >
+                      ↻ {rotatedCount} turned on edge
+                    </button>
+                  )}
+                </div>
 
-                  {/* Stacking Tag */}
-                  <span
-                    className={`text-[10px] px-2 py-0.5 rounded border font-mono ${
-                      item.allowStackAbove
-                        ? 'bg-muted text-muted-foreground border-border'
-                        : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
-                    }`}
-                  >
-                    {item.allowStackAbove ? 'Stackable' : 'Fragile'}
-                  </span>
+                {/* Tier 3: Action Controls Bar (Quantity, Fit, Rotation, Stacking, Edit, Delete) */}
+                <div className="flex items-center justify-between gap-2 pt-2 border-t border-border/60">
+                  {/* Left: Quantity Counter & 1-Click Fit */}
+                  <div className="flex items-center gap-1.5">
+                    <div className="flex items-center bg-background border border-border rounded-lg px-1 py-0.5 shadow-2xs">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (item.quantity <= 1) {
+                            removeItem(item.id);
+                          } else {
+                            updateItem(item.id, { quantity: item.quantity - 1 });
+                          }
+                        }}
+                        className="w-5 h-5 flex items-center justify-center text-muted-foreground hover:text-foreground font-mono rounded hover:bg-muted text-xs"
+                      >
+                        -
+                      </button>
+                      <span className="font-mono font-semibold px-1.5 min-w-[18px] text-center text-foreground text-xs">
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          updateItem(item.id, { quantity: item.quantity + 1 });
+                        }}
+                        className="w-5 h-5 flex items-center justify-center text-muted-foreground hover:text-foreground font-mono rounded hover:bg-muted text-xs"
+                      >
+                        +
+                      </button>
+                    </div>
 
-                  {/* Edit Item Button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleOpenEdit(item);
-                    }}
-                    title="Edit structure details, dimensions, and rules"
-                    className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition"
-                  >
-                    <Pencil className="w-3.5 h-3.5" />
-                  </button>
+                    {/* 1-Click Fit Placed Button if has unplaced */}
+                    {hasUnplaced && placedCount > 0 && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          updateItem(item.id, { quantity: placedCount });
+                        }}
+                        className="text-[10px] text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/25 transition font-semibold"
+                        title={`Reduce requested quantity to ${placedCount} so vehicle is 100% packed`}
+                      >
+                        Fit {placedCount}
+                      </button>
+                    )}
+                  </div>
 
-                  {/* Remove Item Button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      removeItem(item.id);
-                    }}
-                    title="Remove item"
-                    className="p-1 rounded text-muted-foreground hover:text-red-500 transition"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
+                  {/* Right: Rules Badges & Actions */}
+                  <div className="flex items-center gap-1 sm:gap-1.5">
+                    {/* Rotation Rule Tag - Click to view guide */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveModalRule(item.orientation);
+                        setIsRulesModalOpen(true);
+                      }}
+                      className="text-[10px] px-1.5 py-0.5 rounded border border-border bg-muted/60 text-muted-foreground hover:text-foreground font-mono transition cursor-pointer"
+                      title={`Rotation mode: ${item.orientation}. Click to view animated rules explanation.`}
+                    >
+                      {item.orientation === 'any'
+                        ? '↻ Any'
+                        : item.orientation === 'upright_only'
+                        ? '↑ Upright'
+                        : item.orientation === 'flat_only'
+                        ? '▭ Flat'
+                        : item.orientation === 'locked'
+                        ? '🔒 Locked'
+                        : '↔ Lengthwise'}
+                    </button>
+
+                    {/* Stacking Tag */}
+                    <span
+                      className={`text-[10px] px-1.5 sm:px-2 py-0.5 rounded border font-mono ${
+                        item.allowStackAbove
+                          ? 'bg-muted text-muted-foreground border-border'
+                          : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
+                      }`}
+                    >
+                      {item.allowStackAbove ? 'Stackable' : 'Fragile'}
+                    </span>
+
+                    {/* Edit Item Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleOpenEdit(item);
+                      }}
+                      title="Edit structure details, dimensions, and rules"
+                      className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition"
+                    >
+                      <Pencil className="w-3.5 h-3.5" />
+                    </button>
+
+                    {/* Remove Item Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeItem(item.id);
+                      }}
+                      title="Remove item"
+                      className="p-1 rounded text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               </div>
             );

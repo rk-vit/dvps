@@ -117,9 +117,9 @@ export const LoadingScene3D: React.FC = () => {
       {/* 3D Viewport Controls Overlay */}
       <ViewControls />
 
-      {/* Selected Item Floating Inspector Card */}
+      {/* Selected Item Floating Inspector Card - Docks at bottom on mobile to preserve viewport visibility */}
       {selectedItemDetail && (
-        <div className="absolute top-3 right-3 z-10 w-72 bg-card/95 backdrop-blur-md border border-border p-3.5 rounded-xl shadow-lg text-xs text-foreground transition-colors">
+        <div className="absolute bottom-3 left-3 right-3 sm:bottom-auto sm:top-3 sm:left-auto sm:right-3 sm:w-72 z-20 bg-card/95 backdrop-blur-md border border-border p-3 sm:p-3.5 rounded-xl shadow-lg text-xs text-foreground transition-colors">
           <div className="flex items-center justify-between pb-2 mb-2 border-b border-border">
             <div className="font-semibold truncate pr-2">{selectedItemDetail.name}</div>
             <button

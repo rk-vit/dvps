@@ -60,30 +60,31 @@ function PlannerContent() {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors">
       {/* 1. Global Navigation Bar */}
-      <header className="border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-30 px-4 lg:px-8 py-2.5">
-        <div className="max-w-[1700px] mx-auto flex items-center justify-between">
+      <header className="border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-30 px-3 sm:px-4 lg:px-8 py-2 sm:py-2.5">
+        <div className="max-w-[1700px] mx-auto flex items-center justify-between gap-2">
           {/* Back Button & Brand Wordmark */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 min-w-0">
             <Link
               href="/"
-              className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg border border-border bg-card hover:bg-muted text-foreground transition shadow-xs"
+              className="flex items-center gap-1.5 px-2 sm:px-2.5 py-1 text-xs font-medium rounded-lg border border-border bg-card hover:bg-muted text-foreground transition shadow-xs shrink-0"
+              title="Return to dispatch plans dashboard"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>All Plans</span>
+              <span className="hidden xs:inline sm:inline">All Plans</span>
             </Link>
 
-            <div className="h-4 w-px bg-border hidden sm:block" />
+            <div className="h-4 w-px bg-border hidden sm:block shrink-0" />
 
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-sm tracking-widest uppercase font-bold text-foreground">
+            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+              <span className="font-mono text-xs sm:text-sm tracking-widest uppercase font-bold text-foreground shrink-0">
                 DVPS
               </span>
-              <span className="text-muted-foreground text-xs font-mono">•</span>
-              <span className="text-xs font-semibold text-muted-foreground font-mono">
+              <span className="text-muted-foreground text-xs font-mono hidden md:inline">•</span>
+              <span className="text-xs font-semibold text-muted-foreground font-mono hidden md:inline truncate">
                 DISPATCH VEHICLE PLANNING SYSTEM
               </span>
               {activePlan && (
-                <span className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono bg-muted text-foreground border border-border font-semibold">
+                <span className="hidden lg:inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono bg-muted text-foreground border border-border font-semibold truncate">
                   <span>{activePlan.code}:</span>
                   <span className="text-muted-foreground truncate max-w-[180px]">{activePlan.name}</span>
                 </span>
@@ -92,7 +93,7 @@ function PlannerContent() {
           </div>
 
           {/* Action Tools & User Profile */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Theme Toggle Button */}
             <ThemeToggle />
 
@@ -101,27 +102,29 @@ function PlannerContent() {
             {/* Print / Export Loading Manifest */}
             <button
               onClick={() => setIsManifestOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-border bg-card hover:bg-muted text-foreground transition shadow-xs"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-medium rounded-lg border border-border bg-card hover:bg-muted text-foreground transition shadow-xs"
+              title="View sequential loading manifest"
             >
               <FileSpreadsheet className="w-3.5 h-3.5 stroke-[2]" />
-              <span>Loading Manifest</span>
+              <span className="hidden sm:inline">Manifest</span>
             </button>
 
             {/* Run Optimization Button */}
             <button
               onClick={() => runPackingOptimization()}
               disabled={isCalculating}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-foreground text-background hover:opacity-90 transition shadow-xs disabled:opacity-50"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-foreground text-background hover:opacity-90 transition shadow-xs disabled:opacity-50"
+              title="Run 3D Extreme Points CLP packing optimization"
             >
               <RotateCw className={`w-3.5 h-3.5 stroke-[2] ${isCalculating ? 'animate-spin' : ''}`} />
-              <span>{isCalculating ? 'Computing...' : 'Optimize Pack'}</span>
+              <span className="hidden xs:inline sm:inline">{isCalculating ? 'Computing...' : 'Optimize'}</span>
             </button>
 
             <div className="h-4 w-px bg-border mx-0.5 hidden sm:block" />
 
             {/* User Profile / Auth State */}
             {currentUser && (
-              <div className="flex items-center gap-2 pl-1">
+              <div className="flex items-center gap-1.5 sm:gap-2 pl-0.5 sm:pl-1">
                 <div className="hidden xl:block text-right">
                   <div className="text-xs font-semibold text-foreground leading-tight">
                     {currentUser.name}
@@ -131,7 +134,7 @@ function PlannerContent() {
                   </div>
                 </div>
 
-                <div className="w-7 h-7 rounded-full bg-muted border border-border flex items-center justify-center text-foreground font-mono text-xs font-semibold">
+                <div className="w-7 h-7 rounded-full bg-muted border border-border flex items-center justify-center text-foreground font-mono text-xs font-semibold shrink-0">
                   <User className="w-3.5 h-3.5" />
                 </div>
 
@@ -141,7 +144,7 @@ function PlannerContent() {
                     router.push('/login');
                   }}
                   title="Sign out of dispatch terminal"
-                  className="p-1.5 text-muted-foreground hover:text-red-500 rounded-lg hover:bg-muted transition"
+                  className="p-1.5 text-muted-foreground hover:text-red-500 rounded-lg hover:bg-muted transition shrink-0"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                 </button>
@@ -152,7 +155,7 @@ function PlannerContent() {
       </header>
 
       {/* 2. Main Workbench Content Area */}
-      <main className="flex-1 max-w-[1700px] w-full mx-auto p-4 lg:p-6 space-y-4">
+      <main className="flex-1 max-w-[1700px] w-full mx-auto p-3 sm:p-4 lg:p-6 space-y-3 sm:space-y-4">
         {/* Top: Vehicle Fleet Sizing & Presets Selector */}
         <VehicleSelector />
 
@@ -160,15 +163,15 @@ function PlannerContent() {
         <MetricsDashboard />
 
         {/* Lower Section: Split Viewport Workspace */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start min-h-[580px]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 items-start min-h-[400px] lg:min-h-[580px]">
           {/* Left Column (4 cols): Cargo Items Catalog */}
-          <div className="lg:col-span-4 h-full min-h-[540px]">
+          <div className="lg:col-span-4 h-full min-h-[400px] lg:min-h-[540px]">
             <CargoCatalog />
           </div>
 
           {/* Right Column (8 cols): Interactive 3D Canvas Viewport */}
           <div className="lg:col-span-8 flex flex-col gap-3 h-full">
-            <div className="flex-1 min-h-[500px]">
+            <div className="flex-1 min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]">
               <LoadingScene3D />
             </div>
 

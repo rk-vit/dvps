@@ -24,7 +24,7 @@ export const ViewControls: React.FC = () => {
   ];
 
   return (
-    <div className="absolute top-3 left-3 z-10 flex flex-wrap items-center gap-1.5 bg-card/90 dark:bg-card/85 backdrop-blur-md border border-border p-1.5 rounded-xl shadow-xs text-xs text-foreground transition-colors">
+    <div className="absolute top-3 left-3 right-3 sm:right-auto z-10 flex items-center gap-1.5 bg-card/90 dark:bg-card/85 backdrop-blur-md border border-border p-1.5 rounded-xl shadow-xs text-xs text-foreground transition-colors overflow-x-auto max-w-[calc(100%-24px)] no-scrollbar">
       {/* Camera Angle Segment Controls */}
       <div className="flex items-center gap-0.5 bg-muted p-0.5 rounded-lg">
         {presets.map((p) => (

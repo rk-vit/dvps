@@ -35,17 +35,17 @@ export const TimelineSlider: React.FC = () => {
   return (
     <div className="bg-card border border-border p-4 rounded-xl shadow-xs transition-colors">
       {/* Top Header: Step Counter & Quick Jump */}
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold uppercase tracking-wider font-mono text-foreground">
+          <span className="text-xs font-semibold uppercase tracking-wider font-mono text-foreground whitespace-nowrap">
             Loading Sequence Playback
           </span>
-          <span className="px-2 py-0.5 rounded-md bg-muted text-foreground font-mono text-xs font-semibold border border-border">
+          <span className="px-2 py-0.5 rounded-md bg-muted text-foreground font-mono text-xs font-semibold border border-border shrink-0">
             Step {activeStep} / {totalSteps}
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5 text-xs font-mono text-[11px]">
+        <div className="flex items-center gap-1.5 text-xs font-mono text-[11px] self-start sm:self-auto">
           <button
             onClick={() => {
               setIsPlaying(false);

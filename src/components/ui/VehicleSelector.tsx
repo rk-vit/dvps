@@ -18,10 +18,10 @@ export const VehicleSelector: React.FC = () => {
   const isCustom = selectedVehicleId === 'custom-vehicle';
 
   return (
-    <div className="bg-card border border-border p-4 rounded-xl shadow-xs transition-colors">
-      <div className="flex items-center justify-between mb-3">
+    <div className="bg-card border border-border p-3.5 sm:p-4 rounded-xl shadow-xs transition-colors">
+      <div className="flex items-center justify-between gap-2 mb-3">
         <div className="flex items-center gap-2">
-          <span className="font-mono text-xs tracking-wider uppercase font-semibold text-foreground">
+          <span className="font-mono text-xs tracking-wider uppercase font-semibold text-foreground whitespace-nowrap">
             Transport Fleet & Container
           </span>
         </div>
@@ -30,14 +30,14 @@ export const VehicleSelector: React.FC = () => {
             selectVehicle('custom-vehicle');
             setIsCustomOpen(!isCustomOpen);
           }}
-          className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg border transition shadow-xs ${
+          className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg border transition shadow-xs shrink-0 ${
             isCustom
               ? 'border-foreground bg-foreground text-background'
               : 'border-border bg-card text-muted-foreground hover:text-foreground hover:border-neutral-400 dark:hover:border-neutral-600'
           }`}
         >
           <Sliders className="w-3 h-3 stroke-[2]" />
-          <span>Custom Dimensions</span>
+          <span>Custom</span>
         </button>
       </div>
 

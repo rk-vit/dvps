@@ -114,30 +114,30 @@ export default function PlansDashboardPage() {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors">
       {/* 1. Global Navigation Bar */}
-      <header className="border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-30 px-4 lg:px-8 py-2.5">
-        <div className="max-w-[1700px] mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-sm tracking-widest uppercase font-bold text-foreground">
+      <header className="border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-30 px-3 sm:px-4 lg:px-8 py-2 sm:py-2.5">
+        <div className="max-w-[1700px] mx-auto flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+              <span className="font-mono text-sm tracking-widest uppercase font-bold text-foreground shrink-0">
                 DVPS
               </span>
-              <span className="text-muted-foreground text-xs font-mono">•</span>
-              <span className="text-xs font-semibold text-muted-foreground font-mono">
+              <span className="text-muted-foreground text-xs font-mono hidden md:inline">•</span>
+              <span className="text-xs font-semibold text-muted-foreground font-mono hidden md:inline truncate">
                 DISPATCH VEHICLE PLANNING SYSTEM
               </span>
-              <span className="hidden sm:inline-block px-2 py-0.5 rounded text-[10px] font-mono bg-muted text-muted-foreground border border-border">
+              <span className="hidden sm:inline-block px-2 py-0.5 rounded text-[10px] font-mono bg-muted text-muted-foreground border border-border shrink-0">
                 v1.0 CLP
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <ThemeToggle />
 
             <div className="h-4 w-px bg-border mx-0.5 hidden sm:block" />
 
             {currentUser && (
-              <div className="flex items-center gap-2 pl-1">
+              <div className="flex items-center gap-1.5 sm:gap-2 pl-0.5 sm:pl-1">
                 <div className="hidden sm:block text-right">
                   <div className="text-xs font-semibold text-foreground leading-tight">
                     {currentUser.name}
@@ -147,7 +147,7 @@ export default function PlansDashboardPage() {
                   </div>
                 </div>
 
-                <div className="w-7 h-7 rounded-full bg-muted border border-border flex items-center justify-center text-foreground font-mono text-xs font-semibold">
+                <div className="w-7 h-7 rounded-full bg-muted border border-border flex items-center justify-center text-foreground font-mono text-xs font-semibold shrink-0">
                   <User className="w-3.5 h-3.5" />
                 </div>
 
@@ -157,7 +157,7 @@ export default function PlansDashboardPage() {
                     router.push('/login');
                   }}
                   title="Sign out of dispatch terminal"
-                  className="p-1.5 text-muted-foreground hover:text-red-500 rounded-lg hover:bg-muted transition cursor-pointer"
+                  className="p-1.5 text-muted-foreground hover:text-red-500 rounded-lg hover:bg-muted transition cursor-pointer shrink-0"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                 </button>
@@ -190,7 +190,7 @@ export default function PlansDashboardPage() {
         </div>
 
         {/* High-Level Overview Metrics */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <div className="bg-card border border-border p-4 rounded-xl shadow-xs transition-colors">
             <div className="flex items-center justify-between text-muted-foreground text-xs mb-1.5">
               <span className="font-mono tracking-wider uppercase text-[11px]">Total Plans</span>
@@ -273,10 +273,10 @@ export default function PlansDashboardPage() {
           </div>
 
           {/* Filter Pills */}
-          <div className="flex items-center gap-1.5 bg-muted/50 p-1 rounded-lg border border-border text-xs font-mono">
+          <div className="flex items-center gap-1.5 bg-muted/50 p-1 rounded-lg border border-border text-xs font-mono overflow-x-auto no-scrollbar">
             <button
               onClick={() => setStatusFilter('all')}
-              className={`px-3 py-1 rounded-md transition ${
+              className={`px-3 py-1 rounded-md transition shrink-0 ${
                 statusFilter === 'all'
                   ? 'bg-foreground text-background font-semibold shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'
@@ -286,7 +286,7 @@ export default function PlansDashboardPage() {
             </button>
             <button
               onClick={() => setStatusFilter('ready')}
-              className={`px-3 py-1 rounded-md transition ${
+              className={`px-3 py-1 rounded-md transition shrink-0 ${
                 statusFilter === 'ready'
                   ? 'bg-foreground text-background font-semibold shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'
@@ -296,7 +296,7 @@ export default function PlansDashboardPage() {
             </button>
             <button
               onClick={() => setStatusFilter('draft')}
-              className={`px-3 py-1 rounded-md transition ${
+              className={`px-3 py-1 rounded-md transition shrink-0 ${
                 statusFilter === 'draft'
                   ? 'bg-foreground text-background font-semibold shadow-xs'
                   : 'text-muted-foreground hover:text-foreground'

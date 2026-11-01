@@ -26,9 +26,9 @@ export const MetricsDashboard: React.FC = () => {
   const isLateralOff = centerOfGravity.isLaterallyImbalanced;
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
       {/* 1. Volumetric Space Utilization */}
-      <div className="bg-card border border-border p-4 rounded-xl shadow-xs transition-colors">
+      <div className="bg-card border border-border p-3.5 sm:p-4 rounded-xl shadow-xs transition-colors">
         <div className="flex items-center justify-between text-muted-foreground text-xs mb-1.5">
           <span className="font-mono tracking-wider uppercase text-[11px]">Volume Utilization</span>
           <Box className="w-3.5 h-3.5 stroke-[1.8]" />
@@ -50,7 +50,7 @@ export const MetricsDashboard: React.FC = () => {
       </div>
 
       {/* 2. Payload Weight Utilization */}
-      <div className="bg-card border border-border p-4 rounded-xl shadow-xs transition-colors">
+      <div className="bg-card border border-border p-3.5 sm:p-4 rounded-xl shadow-xs transition-colors">
         <div className="flex items-center justify-between text-muted-foreground text-xs mb-1.5">
           <span className="font-mono tracking-wider uppercase text-[11px]">Payload Weight</span>
           <Weight className="w-3.5 h-3.5 stroke-[1.8]" />
@@ -78,7 +78,7 @@ export const MetricsDashboard: React.FC = () => {
       </div>
 
       {/* 3. Axle Balance & Stability */}
-      <div className="bg-card border border-border p-4 rounded-xl shadow-xs transition-colors">
+      <div className="bg-card border border-border p-3.5 sm:p-4 rounded-xl shadow-xs transition-colors">
         <div className="flex items-center justify-between text-muted-foreground text-xs mb-1.5">
           <span className="font-mono tracking-wider uppercase text-[11px]">Axle Distribution</span>
           <Gauge className="w-3.5 h-3.5 stroke-[1.8]" />
@@ -111,7 +111,7 @@ export const MetricsDashboard: React.FC = () => {
       </div>
 
       {/* 4. Pack Status & Solver Speed */}
-      <div className="bg-card border border-border p-4 rounded-xl shadow-xs transition-colors">
+      <div className="bg-card border border-border p-3.5 sm:p-4 rounded-xl shadow-xs transition-colors">
         <div className="flex items-center justify-between text-muted-foreground text-xs mb-1.5">
           <span className="font-mono tracking-wider uppercase text-[11px]">Dispatch Status</span>
           <Clock className="w-3.5 h-3.5 stroke-[1.8]" />

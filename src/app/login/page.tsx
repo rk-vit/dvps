@@ -46,8 +46,8 @@ export default function LoginPage() {
           <span className="font-mono text-xs tracking-widest uppercase font-bold text-foreground">
             DVPS
           </span>
-          <span className="text-muted-foreground text-xs font-mono">•</span>
-          <span className="text-xs font-semibold text-muted-foreground font-mono">
+          <span className="text-muted-foreground text-xs font-mono hidden sm:inline">•</span>
+          <span className="text-xs font-semibold text-muted-foreground font-mono hidden sm:inline">
             DISPATCH VEHICLE PLANNING SYSTEM
           </span>
         </div>
